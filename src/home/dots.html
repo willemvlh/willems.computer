@@ -1,0 +1,88 @@
+<canvas id="canvas" width="600" height="130"></canvas>
+<script>
+    const BIAS_POS = 0.4;
+    const BIAS_NEG = -0.4;
+
+    const canvas = document.getElementById("canvas")
+    function onResize() {
+        canvas.width = canvas.parentElement.clientWidth / 2;
+        canvas.height = canvas.parentElement.clientHeight / 2;
+    }
+
+    window.addEventListener("resize", onResize);
+    onResize();
+
+    const context = canvas.getContext("2d", { alpha: true });
+    class MovingPoint {
+        constructor(x, y, direction) {
+            this.x = x;
+            this.y = y;
+            this.height = 1;
+            this.direction = direction;
+            let rand = Math.random();
+            this.bias = rand > 2 / 3 ? BIAS_POS : rand > 1 / 3 ? 0 : BIAS_NEG
+        }
+
+        draw(context) {
+            context.fillStyle = this.bias == 0 ? "black" : this.bias == BIAS_NEG ? "red" : "green"
+            context.fillRect(this.x, this.y, 1, 1);
+        }
+
+        dy() {
+            if (this.y >= canvas.height) {
+                this.bias = BIAS_NEG
+                return -1;
+            }
+            if (this.y <= 0) {
+                this.bias = BIAS_POS;
+                return 1;
+            }
+            return Math.random() >= (0.5 - this.bias) ? 1 : -1
+
+        }
+
+        dx() {
+            const xFactor = Math.random() > 0.95 ? 1 : 0;
+            return (1 * this.direction) + xFactor;
+        }
+
+        touchesHorizontalBorder() {
+            return this.x >= canvas.width || this.x <= 0;
+        }
+
+        move() {
+            if (this.x >= canvas.width || this.x <= 0) {
+                this.changeHorizontalDirection()
+            }
+            this.x += this.dx();
+            this.y += this.dy();
+        }
+        changeHorizontalDirection() {
+            this.direction *= -1
+        }
+    }
+    let points = new Array(350)
+    let counter = 0;
+    function animate(lastDrawn) {
+        let { left: left, right: right, width: width, height: height } = canvas.getBoundingClientRect()
+        let lastDrawnUpdated;
+        if (document.timeline.currentTime - lastDrawn > 40) {
+            context.clearRect(0, 0, width, height)
+            context.beginPath();
+            points.forEach(point => {
+                point.move();
+                lastDrawnUpdated = document.timeline.currentTime
+                point.draw(context);
+            })
+        };
+        let rand = Math.random()
+        if (points.length < 20_000 && counter % 5 == 0 ) {
+            let newPoints = new Array(50).fill().map((_, index) => new MovingPoint(canvas.width / 2, canvas.height / 2, (index % 1 ? 1 : -1)))
+            points.push(...newPoints)
+        }
+        counter++;
+        window.requestAnimationFrame(() => animate(lastDrawnUpdated ?? lastDrawn))
+    }
+
+    window.requestAnimationFrame(animate)
+</script>
