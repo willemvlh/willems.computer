@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Router, json } from "express"
 import { readFile } from "node:fs/promises"
 import path from 'node:path'
 import client from '../mqtt/client'
@@ -8,6 +8,7 @@ type ColorPayload = {
 }
 
 const router = Router()
+router.use(json())
 router.post("/bedroom", async (req, res) => {
     const body: ColorPayload = req.body
     if (body.color === undefined) {
