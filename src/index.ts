@@ -18,11 +18,14 @@ app.use(music)
 app.use(sports)
 app.use(bedroom)
 
-app.use(express.static("src/static"))
+app.use(express.static(path.join(__dirname, "/static")))
 
 app.set("views", path.join(__dirname,'./views'))
 app.set("view engine", "ejs")
 
-app.listen(8080, () => console.log("listening"))
+Object.entries(process.env).forEach(entry => {
+    console.log(entry.join("="))
+})
+app.listen(8080, () => console.log("listening on port 8080..."))
 
 export default app;
