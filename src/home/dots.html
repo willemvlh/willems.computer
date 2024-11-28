@@ -6,7 +6,6 @@
 </div>
 <script>
     document.getElementById("range1").oninput = (ev) => {
-        console.log(ev.target.value)
         canvas.width = ev.target.value
     }
     document.getElementById("range2").oninput = (ev) => {
@@ -23,6 +22,9 @@
         canvas.width = canvas.parentElement.clientWidth / 2;
         canvas.height = canvas.parentElement.clientHeight / 2;
         document.getElementById("range1").value = canvas.width
+        document.getElementById("range1").max = canvas.parentElement.clientWidth
+        document.getElementById("range2").value = canvas.height
+        document.getElementById("range2").max = canvas.parentElement.clientHeight
     }
 
     window.addEventListener("resize", onResize);

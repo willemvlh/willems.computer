@@ -46,7 +46,6 @@ header {
 
 
 main {
-    width: 800px;
     max-width: 90%;
     margin: auto;
 }
@@ -64,7 +63,17 @@ body {
 }
 
 canvas {
-    border: solid 1px lightslategray
+    animation: hmm 60s infinite alternate-reverse
+}
+
+@keyframes hmm {
+    from{
+        filter: hue-rotate(0deg) blur(8px)
+    }
+
+    to{
+        filter: hue-rotate(360deg) blur(8px)
+    }
 }
 
 table,
