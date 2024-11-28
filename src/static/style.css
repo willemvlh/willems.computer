@@ -1,6 +1,8 @@
-body{
+body {
+    font-size: 13px;
     background: #222;
 }
+
 div#container {
     display: grid;
     grid-template-rows: 1fr auto;
@@ -9,33 +11,54 @@ div#container {
     margin: auto;
 }
 
-a{
+a {
     text-decoration: none;
     color: #ff006c;
     text-shadow: 6px 4px 0px purple;
     text-transform: uppercase;
 }
 
-a:visited{
+a:visited {
     color: #ff006c
 }
 
 header {
     display: flex;
-    font-size: 1.6rem;
     font-weight: bold;
+    font-size: 1.6rem;
     justify-content: center;
-    gap: 3rem;
+    gap: 1rem 2rem;
+    flex-wrap: wrap;
+
 }
 
+@media (min-width: 600px) {
+    header {
+        font-size: 1.6rem;
+        gap: 3rem;
+    }
+
+    main{
+        font-size: 1.2rem;
+        line-height: 1.7rem;
+    }
+}
+
+
 main {
-    font-size: 1.2rem;
-    line-height: 1.7rem;
-    width: fit-content;
+    width: 800px;
+    max-width: 90%;
     margin: auto;
 }
 
-body{
+div#canvas-container {
+    text-align: center;
+    width: 100%;
+    min-width: 50vw;
+    min-height: 80vh;
+}
+
+body {
     font-family: 'Funnel Sans';
     color: white
 }
@@ -44,9 +67,20 @@ canvas {
     border: solid 1px lightslategray
 }
 
-table,td,th {
-    border: solid 1px #ccc;
+table,
+td,
+th {
+    border: solid 1px #444;
     border-collapse: collapse;
     padding: 4px;
 }
 
+tr.light{
+    background-color: #1b420a;
+}
+tr.mid{
+    background-color: #42410a;
+}
+tr.heavy{
+    background-color: #420a0a;
+}

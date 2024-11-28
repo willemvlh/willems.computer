@@ -1,12 +1,28 @@
-<canvas id="canvas" width="600" height="130"></canvas>
+<div id="canvas-container"><canvas id="canvas" width="600" height="150"></canvas>
+    <div>
+    <input type="range" min="150" max="800" value="160" id="range1">
+    <input type="range" min="50" max="300" value="150" id="range2">
+    </div>
+</div>
 <script>
+    document.getElementById("range1").oninput = (ev) => {
+        console.log(ev.target.value)
+        canvas.width = ev.target.value
+    }
+    document.getElementById("range2").oninput = (ev) => {
+        canvas.height = ev.target.value
+    }
     const BIAS_POS = 0.4;
     const BIAS_NEG = -0.4;
+    const COLOR_POS = "#d32231"
+    const COLOR_NEG = "purple"
+    const COLOR_NEUTRAL = "white"
 
     const canvas = document.getElementById("canvas")
     function onResize() {
         canvas.width = canvas.parentElement.clientWidth / 2;
         canvas.height = canvas.parentElement.clientHeight / 2;
+        document.getElementById("range1").value = canvas.width
     }
 
     window.addEventListener("resize", onResize);
@@ -24,7 +40,7 @@
         }
 
         draw(context) {
-            context.fillStyle = this.bias == 0 ? "black" : this.bias == BIAS_NEG ? "red" : "green"
+            context.fillStyle = this.bias == 0 ? COLOR_NEUTRAL : this.bias == BIAS_NEG ? COLOR_POS : COLOR_NEG
             context.fillRect(this.x, this.y, 1, 1);
         }
 
@@ -76,7 +92,7 @@
             })
         };
         let rand = Math.random()
-        if (points.length < 20_000 && counter % 5 == 0 ) {
+        if (points.length < 20_000 && counter % 5 == 0) {
             let newPoints = new Array(50).fill().map((_, index) => new MovingPoint(canvas.width / 2, canvas.height / 2, (index % 1 ? 1 : -1)))
             points.push(...newPoints)
         }

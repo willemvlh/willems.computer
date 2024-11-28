@@ -4,7 +4,7 @@ dayjs.extend(relative)
 
 export function view(data: any): string {
     try {
-        let string = `<div style="text-align: center">`
+        let string = `<div style="">`
         data.forEach((song: any, idx: number) => {
             let date = song.date?.uts * 1000 
             let dateInfo = '';
@@ -14,7 +14,7 @@ export function view(data: any): string {
             else if(song['@attr']?.nowplaying){
                 dateInfo = 'now playing'
             }
-            string += `<div class="song" style="margin-left: ${Math.random() * 60}px; opacity: ${(data.length - (idx / 1.3)) / data.length * 100}%">
+            string += `<div class="song" style="margin-left: ${(idx % 10 > 5 ? 10 - (idx % 10) : idx %10) * 10}px; opacity: ${(data.length - (idx / 1.3)) / data.length * 100}%">
         <span>${song.artist['#text']}</span> - </span>${song.name} (${dateInfo})</div>`
         })
         string += `</div>`

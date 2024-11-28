@@ -10,7 +10,7 @@ export async function getLastPlayedTracks() {
             throw new Error("Bad last fm response! " + resp.statusText)
         }
         const json = await resp.json()
-        return json.recenttracks.track.slice(0, 20);
+        return json.recenttracks.track.slice(0, 25);
     }
     catch (e) {
         console.log(e)

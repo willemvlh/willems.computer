@@ -9,7 +9,9 @@ import { cacheMiddleware } from "./cache"
 
 const app = express()
 
-app.use(cacheMiddleware);
+if (!process.env.TS_NODE_DEV) {
+    app.use(cacheMiddleware);
+}
 
 app.use(express.json());
 app.use(home)
@@ -20,7 +22,7 @@ app.use(bedroom)
 
 app.use(express.static(path.join(__dirname, "/static")))
 
-app.set("views", path.join(__dirname,'./views'))
+app.set("views", path.join(__dirname, './views'))
 app.set("view engine", "ejs")
 
 Object.entries(process.env).forEach(entry => {

@@ -22,9 +22,14 @@ export async function getAccessToken() {
 }
 
 async function refresh(token: string): Promise<Tokens> {
+    const clientId = process.env['STRAVA_CLIENT_ID']
+    const clientSecret = process.env['STRAvA_CLIENT_SECRET']
+    if(!clientId || !clientSecret){
+        throw new Error(`Missing client id or secret`);
+    };
     let formData = new FormData()
-    formData.append('client_id', '130334')
-    formData.append('client_secret', 'bdbfd29d5a799d21c0fcc5572fa63b5f5935faca')
+    formData.append('client_id', clientId)
+    formData.append('client_secret',clientSecret)
     formData.append('grant_type', 'refresh_token')
     formData.append('refresh_token', token)
 

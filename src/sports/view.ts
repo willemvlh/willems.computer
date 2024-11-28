@@ -18,12 +18,12 @@ export function view(activities: DetailedActivity[]) {
     <th>Date</th>
     <th>Type</th>
     <th>Moving time</th>
-    <th>Avg heart rate</th>
-    <th>Max heart rate</th>
+    <th>Avg 💓</th>
+    <th>Max 💓</th>
     <th>Kcal</th>
 </tr>`
     activities.forEach(a => {
-        str += `<tr>
+        str += `<tr class="${a.calories >= 400 ? "heavy" : a.calories >= 200 ? "mid" : "light"}">
     <td>${dayjs(a.start_date).fromNow()}</td>
     <td>${activityMap[a.type] ?? a.type}</td>
     <td>${dayjs.duration(a.moving_time, 'second').format('mm:ss')}</td>
