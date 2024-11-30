@@ -1,16 +1,6 @@
-<div id="canvas-container"><canvas id="canvas" width="600" height="150"></canvas>
-    <div>
-    <input type="range" min="150" max="800" value="160" id="range1">
-    <input type="range" min="50" max="300" value="150" id="range2">
-    </div>
+<div id="canvas-container"><canvas id="canvas" width="600" height="500"></canvas>
 </div>
 <script>
-    document.getElementById("range1").oninput = (ev) => {
-        canvas.width = ev.target.value
-    }
-    document.getElementById("range2").oninput = (ev) => {
-        canvas.height = ev.target.value
-    }
     const BIAS_POS = 0.4;
     const BIAS_NEG = -0.4;
     const COLOR_POS = "#d32231"
@@ -18,13 +8,10 @@
     const COLOR_NEUTRAL = "white"
 
     const canvas = document.getElementById("canvas")
+    let myHeight = 150;
     function onResize() {
-        canvas.width = canvas.parentElement.clientWidth / 2;
-        canvas.height = canvas.parentElement.clientHeight / 2;
-        document.getElementById("range1").value = canvas.width
-        document.getElementById("range1").max = canvas.parentElement.clientWidth
-        document.getElementById("range2").value = canvas.height
-        document.getElementById("range2").max = canvas.parentElement.clientHeight
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
     }
 
     window.addEventListener("resize", onResize);
@@ -47,7 +34,7 @@
         }
 
         dy() {
-            if (this.y >= canvas.height) {
+            if (this.y >= myHeight) {
                 this.bias = BIAS_NEG
                 return -1;
             }
@@ -95,12 +82,31 @@
         };
         let rand = Math.random()
         if (points.length < 20_000 && counter % 5 == 0) {
-            let newPoints = new Array(50).fill().map((_, index) => new MovingPoint(canvas.width / 2, canvas.height / 2, (index % 1 ? 1 : -1)))
+            let newPoints = new Array(50).fill().map((_, index) => new MovingPoint(canvas.width / 2, myHeight / 2, (index % 2 ? 1 : -1)))
             points.push(...newPoints)
         }
         counter++;
         window.requestAnimationFrame(() => animate(lastDrawnUpdated ?? lastDrawn))
     }
 
+    (function scheduleBang() {
+        for (let i = 0; i < points.length; i = i + 2) {
+            points[i]?.changeHorizontalDirection()
+        }
+        setTimeout(scheduleBang, Math.random() * 60000)
+    })();
+
+    (function scheduleKill(){
+        points.length = Math.max(0, (points.length - 1000));
+        setTimeout(scheduleKill, Math.random() * 29000);
+    })();
+
+    (function scheduleHeightChange(){
+        let heightShift = 40 - Math.random() * 80
+        myHeight = Math.max(Math.min(myHeight+heightShift,canvas.parentElement.clientHeight),50)
+        setTimeout(scheduleHeightChange, Math.random() * 12000)
+    })();
+
     window.requestAnimationFrame(animate)
+
 </script>
